@@ -41,7 +41,7 @@ reg.boat.1 = feols(y_boats ~ post*wave + funds, WDB)
 
 reg.boat.2 = feols(y_boats ~ post*wave*common + funds | roa, WDB)
 
-reg.boat.3 = feols(y_boats ~ post*wave*common | roa + year^month^municipality, WDB)
+reg.boat.3 = feols(y_boats ~ post*wave*common | roa + year^month^comuna, WDB)
 
 # Regression for capacity flow
 
@@ -49,7 +49,7 @@ reg.cap.1 = feols(y_cap ~ post*wave + funds, WDB)
 
 reg.cap.2 = feols(y_cap ~ post*wave*common + funds | roa, WDB)
 
-reg.cap.3 = feols(y_cap ~ post*wave*common | roa + year^month^municipality, WDB) 
+reg.cap.3 = feols(y_cap ~ post*wave*common | roa + year^month^comuna, WDB) 
 
 # Regression for engine power flow
 
@@ -57,7 +57,7 @@ reg.power.1 = feols(y_power ~ post*wave + funds, WDB)
 
 reg.power.2 = feols(y_power ~ post*wave*common + funds | roa , WDB)
 
-reg.power.3 = feols(y_power ~ post*wave*common | roa + year^month^municipality, WDB)
+reg.power.3 = feols(y_power ~ post*wave*common | roa + year^month^comuna, WDB)
 
 # Create table
 
@@ -66,14 +66,14 @@ etable(reg.boat.1, reg.boat.2, reg.boat.3,
        reg.power.1, reg.power.2, reg.power.3,
        drop = c("Intercept","funds"),
        signifCode = c("***"=0.001, "**"=0.01, "*"=0.05),
-       cluster = "municipality")
+       cluster = "comuna")
 
 etable(reg.boat.1, reg.boat.2, reg.boat.3,
        reg.cap.1, reg.cap.2, reg.cap.3,
        reg.power.1, reg.power.2, reg.power.3,
        drop = c("Intercept","funds"),
        signifCode = c("***"=0.001, "**"=0.01, "*"=0.05),
-       cluster = "municipality",
+       cluster = "comuna",
        digits = 3,
        tex = TRUE)
 
@@ -98,20 +98,20 @@ rt = -12 # Reference month relative to Feb 2010
 
 # Event study for engine power flow
 
-boat_did = feols(roll_boats ~ i(period, treat, rt) | roa + year^month^municipality,
-                 cluster = "municipality",
+boat_did = feols(roll_boats ~ i(period, treat, rt) | roa + year^month^comuna,
+                 cluster = "comuna",
                  EWDB)
 
 # Event study for engine power flow
 
-cap_did = feols(roll_cap ~ i(period, treat, rt)  | roa + year^month^municipality,
-                cluster = "municipality",
+cap_did = feols(roll_cap ~ i(period, treat, rt)  | roa + year^month^comuna,
+                cluster = "comuna",
                 EWDB)
 
 # Event study for engine power flow
 
-power_did = feols(roll_power ~ i(period, treat, rt)   | roa + year^month^municipality, 
-                  cluster = "municipality",
+power_did = feols(roll_power ~ i(period, treat, rt)   | roa + year^month^comuna, 
+                  cluster = "comuna",
                   EWDB)
 
 # Visualization

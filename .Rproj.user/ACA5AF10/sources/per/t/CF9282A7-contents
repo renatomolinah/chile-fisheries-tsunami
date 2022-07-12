@@ -40,7 +40,7 @@ reg.harv.1 = feols(y_harvest ~ post*wave + funds, WDB)
 
 reg.harv.2 = feols(y_harvest ~ post*wave*common + funds | roa, WDB)
 
-reg.harv.3 = feols(y_harvest ~ post*wave*common | roa + year^month^municipality, WDB)
+reg.harv.3 = feols(y_harvest ~ post*wave*common | roa + year^month^comuna, WDB)
 
 # Regression for revenue flow
 
@@ -48,7 +48,7 @@ reg.rev.1 = feols(y_revenue ~ post*wave + funds, WDB)
 
 reg.rev.2 = feols(y_revenue ~ post*wave*common + funds | roa, WDB)
 
-reg.rev.3 = feols(y_revenue ~ post*wave*common | roa + year^month^municipality, WDB) 
+reg.rev.3 = feols(y_revenue ~ post*wave*common | roa + year^month^comuna, WDB) 
 
 # Create table
 
@@ -56,13 +56,13 @@ etable(reg.harv.1, reg.harv.2, reg.harv.3,
        reg.rev.1, reg.rev.2, reg.rev.3,
        drop = c("Intercept","funds"),
        signifCode = c("***"=0.001, "**"=0.01, "*"=0.05),
-       cluster = "municipality")
+       cluster = "comuna")
 
 etable(reg.harv.1, reg.harv.2, reg.harv.3,
        reg.rev.1, reg.rev.2, reg.rev.3,
        drop = c("Intercept","funds"),
        signifCode = c("***"=0.001, "**"=0.01, "*"=0.05),
-       cluster = "municipality",
+       cluster = "comuna",
        digits = 3,
        tex = TRUE)
 
@@ -86,14 +86,14 @@ rt = -12 # Reference month relative to Feb 2010
 
 # Event study for harvest flow
 
-harv_did = feols(roll_harvest ~ i(period, treat, rt) | roa + year^month^municipality,
-                 cluster = "municipality",
+harv_did = feols(roll_harvest ~ i(period, treat, rt) | roa + year^month^comuna,
+                 cluster = "comuna",
                  EWDB)
 
 # Event study for revenue flow
 
-rev_did = feols(roll_revenue ~ i(period, treat, rt)  | roa + year^month^municipality,
-                cluster = "municipality",
+rev_did = feols(roll_revenue ~ i(period, treat, rt)  | roa + year^month^comuna,
+                cluster = "comuna",
                 EWDB)
 
 # Visualization
